@@ -2,9 +2,9 @@
 
 namespace Microsoft.Data.Entity
 {
-    public interface IBlobDbContext
+    public interface IFileUploadDbContext
     {
-        DbSet<Blob> Blobs { get; set; }
+        DbSet<File> Files { get; set; }
         int SaveChanges();
     }
 }

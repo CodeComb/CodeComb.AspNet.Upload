@@ -10,7 +10,7 @@ namespace CodeComb.AspNet.Upload.Models
     {
         public static ModelBuilder SetupBlob(this ModelBuilder self)
         {
-            return self.Entity<Blob>(e =>
+            return self.Entity<File>(e =>
             {
                 e.HasIndex(x => x.Time);
                 e.HasIndex(x => x.FileName);

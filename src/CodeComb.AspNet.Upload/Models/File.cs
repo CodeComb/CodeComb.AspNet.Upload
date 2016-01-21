@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CodeComb.AspNet.Upload.Models
 {
-    public class Blob
+    public class File
     {
         public Guid Id { get; set; }
 
@@ -17,6 +17,6 @@ namespace CodeComb.AspNet.Upload.Models
 
         public DateTime Time { get; set; }
 
-        public byte[] File { get; set; }
+        public byte[] Bytes { get; set; }
     }
 }

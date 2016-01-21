@@ -28,7 +28,7 @@ namespace Microsoft.AspNet.Builder
                     context.HttpContext.Response.ContentType = blob.ContentType;
                     context.HttpContext.Response.ContentLength = blob.ContentLength;
                     context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
-                    context.HttpContext.Response.Body.Write(blob.File, 0, blob.File.Length);
+                    context.HttpContext.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
                 }
             });
             var routeBuilder1 = new RouteBuilder();
@@ -50,26 +50,26 @@ namespace Microsoft.AspNet.Builder
                     var file = context.HttpContext.Request.Form.Files["file"];
                     if (file != null)
                     {
-                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.Blob
+                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.File
                         {
                             Time = DateTime.Now,
                             ContentType = file.ContentType,
                             ContentLength = file.Length,
                             FileName = file.GetFileName(),
-                            File = file.ReadAllBytes()
+                            Bytes = file.ReadAllBytes()
                         });
                         await context.HttpContext.Response.WriteAsync(id.ToString());
                     }
                     else
                     {
-                        var img = new Base64StringImage(c.Request.Form["file"]);
-                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.Blob
+                        var img = new Base64StringImage(context.HttpContext.Request.Form["file"]);
+                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.File
                         {
                             Time = DateTime.Now,
                             ContentType = img.ContentType,
                             ContentLength = img.ImageString.Length,
                             FileName = "file",
-                            File = img.AllBytes
+                            Bytes = img.AllBytes
                         });
                         await context.HttpContext.Response.WriteAsync(id.ToString());
                     }
@@ -761,35 +761,36 @@ namespace Microsoft.AspNet.Builder
 
 (function($) {
     $.fn.dragDropOrPaste = function(postData, onUploading, onUploaded) {
+        var obj = this;
         this.dropper({
-            action: '/"+controller+"/"+uploadAction+@"',
+            action: '/"+controller+"/"+uploadAction+ @"',
             maxQueue: 1,
             postData: postData || {}
         })
         .on('fileStart.dropper', function (file) {
-            var pos = this.getCursorPosition();
-            var str = this.val();
+            var pos = obj.getCursorPosition();
+            var str = obj.val();
             if (onUploading)
                 onUploading();
-            this.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
+            obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
         })
         .on('fileComplete.dropper', function (file, res, ret) {
-                var content = this.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/" + downloadAction + @"/' + result.fileId + ')');
-            this.val(content);
+                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/" + downloadAction + @"/' + result.fileId + ')');
+            obj.val(content);
             if (onUploaded)
                 onUploaded();
         });
         
         this.pastableTextarea();
         this.on('pasteImage', function (ev, data) {
-            var pos = this.getCursorPosition();
-            var str = this.val();
+            var pos = obj.getCursorPosition();
+            var str = obj.val();
             if (onUploading)
                 onUploading();
-            this.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
+            obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
             $.post('/" + controller + "/" + uploadAction + @"', { file: data.dataURL }, function (result) {
-                var content = this.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/"+ downloadAction +@"/' + result.fileId + ')');
-                this.val(content);
+                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/"+ downloadAction + @"/' + result.fileId + ')');
+                obj.val(content);
             }, 'json');
         });
     }

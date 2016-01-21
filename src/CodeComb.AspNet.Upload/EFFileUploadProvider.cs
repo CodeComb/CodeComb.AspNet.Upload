@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class EFFileUploadProviderServiceCollectionExtensions
     {
         public static IFileUploadBuilder AddEntityFrameworkStorage<TContext>(this IFileUploadBuilder self)
-            where TContext : DbContext, IBlobDbContext
+            where TContext : DbContext, IFileUploadDbContext
         {
             self.Services.AddScoped<IFileUploadProvider, EFFileUploadProvider<TContext>>();
             return self;
@@ -19,9 +19,9 @@ namespace Microsoft.Extensions.DependencyInjection
 namespace CodeComb.AspNet.Upload
 {
     public class EFFileUploadProvider<TContext> : IFileUploadProvider
-        where TContext : DbContext, IBlobDbContext
+        where TContext : DbContext, IFileUploadDbContext
     {
-        protected IBlobDbContext DbContext { get; set; }
+        protected IFileUploadDbContext DbContext { get; set; }
 
         public EFFileUploadProvider(TContext db)
         {
@@ -30,26 +30,27 @@ namespace CodeComb.AspNet.Upload
 
         public void Delete(Guid id)
         {
-            var blob = DbContext.Blobs.Where(x => x.Id == id).SingleOrDefault();
+            var blob = DbContext.Files
+                .SingleOrDefault(x => x.Id == id);
             if (blob != null)
             {
-                DbContext.Blobs.Remove(blob);
+                DbContext.Files.Remove(blob);
                 DbContext.SaveChanges();
             }
         }
 
-        public Models.Blob Get(Guid id)
+        public Models.File Get(Guid id)
         {
-            return DbContext.Blobs.Where(x => x.Id == id).SingleOrDefault(); 
+            return DbContext.Files.Where(x => x.Id == id).SingleOrDefault(); 
         }
 
-        public Guid Set(Models.Blob blob)
+        public Guid Set(Models.File file)
         {
-            if (blob.Id != default(Guid) && DbContext.Blobs.Where(x => x.Id == blob.Id).SingleOrDefault() != null)
-                Delete(blob.Id);
-            DbContext.Blobs.Add(blob);
+            if (file.Id != default(Guid) && DbContext.Files.Where(x => x.Id == file.Id).SingleOrDefault() != null)
+                Delete(file.Id);
+            DbContext.Files.Add(file);
             DbContext.SaveChanges();
-            return blob.Id;
+            return file.Id;
         }
     }
 }
