@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SignedUserUploadAuthorizationProviderServiceCollectionExtensions
     {
-        public static IBlobBuilder AddSignedUserBlobUploadAuthorization(this IBlobBuilder self)
+        public static IFileUploadBuilder AddSignedUserBlobUploadAuthorization(this IFileUploadBuilder self)
         {
             self.Services.AddSingleton<IUploadAuthorizationProvider, SignedUserUploadAuthorizationProvider>();
             return self;

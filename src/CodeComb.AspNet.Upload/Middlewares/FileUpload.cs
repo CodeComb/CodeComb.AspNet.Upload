@@ -11,10 +11,10 @@ namespace Microsoft.AspNet.Builder
 {
     public static class Blob
     {
-        public static IApplicationBuilder UseBlob(this IApplicationBuilder self)
+        public static IApplicationBuilder UseBlob(this IApplicationBuilder self, string path = "/scripts/jquery.codecomb.fileupload.js")
         {
             var endpoint = new DelegateRouteEndpoint(async context => {
-                var bs = context.HttpContext.RequestServices.GetRequiredService<IBlobProvider>();
+                var bs = context.HttpContext.RequestServices.GetRequiredService<IFileUploadProvider>();
                 var id = Guid.Parse(context.RouteData.Values["id"].ToString());
                 var blob = bs.Get(id);
                 if (blob == null)
@@ -48,7 +48,7 @@ namespace Microsoft.AspNet.Builder
                         }
                         else if (c.Request.Method == "POST")
                         {
-                            var bs = self.ApplicationServices.GetRequiredService<IBlobProvider>();
+                            var bs = self.ApplicationServices.GetRequiredService<IFileUploadProvider>();
                             var file = c.Request.Form.Files["file"];
                             if (file != null)
                             {

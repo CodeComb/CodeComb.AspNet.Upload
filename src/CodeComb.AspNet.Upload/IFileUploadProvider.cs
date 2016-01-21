@@ -2,7 +2,7 @@
 
 namespace CodeComb.AspNet.Upload
 {
-    public interface IBlobProvider
+    public interface IFileUploadProvider
     {
         Models.Blob Get(Guid id);
         void Delete(Guid id);

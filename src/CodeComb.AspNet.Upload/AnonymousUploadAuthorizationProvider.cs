@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PipeCI.Blob
+namespace CodeComb.AspNet.Upload
 {
     public class AnonymousUploadAuthorizationProvider : IUploadAuthorizationProvider
     {

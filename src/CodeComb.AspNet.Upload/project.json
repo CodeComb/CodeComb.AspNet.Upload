@@ -11,7 +11,7 @@
     "Microsoft.AspNet.Routing": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "EntityFramework.Core": "7.0.0-rc1-final",
-    "CodeComb.AspNet.Extensions": "2.0.0-rc1-final"
+    "CodeComb.AspNet.Extensions": "2.0.0-rc1-final-3"
   },
 
   "frameworks": {

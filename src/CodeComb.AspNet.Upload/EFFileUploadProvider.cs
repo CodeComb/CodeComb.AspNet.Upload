@@ -5,12 +5,12 @@ using CodeComb.AspNet.Upload;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class EFBlobProviderServiceCollectionExtensions
+    public static class EFFileUploadProviderServiceCollectionExtensions
     {
-        public static IBlobBuilder AddEntityFrameworkStorage<TContext>(this IBlobBuilder self)
+        public static IFileUploadBuilder AddEntityFrameworkStorage<TContext>(this IFileUploadBuilder self)
             where TContext : DbContext, IBlobDbContext
         {
-            self.Services.AddScoped<IBlobProvider, EFBlobProvider<TContext>>();
+            self.Services.AddScoped<IFileUploadProvider, EFFileUploadProvider<TContext>>();
             return self;
         }
     }
@@ -18,12 +18,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
 namespace CodeComb.AspNet.Upload
 {
-    public class EFBlobProvider<TContext> : IBlobProvider
+    public class EFFileUploadProvider<TContext> : IFileUploadProvider
         where TContext : DbContext, IBlobDbContext
     {
         protected IBlobDbContext DbContext { get; set; }
 
-        public EFBlobProvider(TContext db)
+        public EFFileUploadProvider(TContext db)
         {
             DbContext = db;
         }

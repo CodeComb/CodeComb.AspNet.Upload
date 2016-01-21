@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public class BlobBuilder : IBlobBuilder
+    public interface IFileUploadBuilder
     {
-        public IServiceCollection Services { get; set; }
+        IServiceCollection Services { get; }
     }
 }

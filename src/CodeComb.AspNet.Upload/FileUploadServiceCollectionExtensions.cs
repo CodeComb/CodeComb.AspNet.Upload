@@ -8,9 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class BlobServiceCollectionExtensions
     {
-        public static IBlobBuilder AddBlob(this IServiceCollection self)
+        public static IFileUploadBuilder AddFileUpload(this IServiceCollection self)
         {
-            var builder = new BlobBuilder();
+            var builder = new FileUploadBuilder();
             builder.Services = self.AddRouting();
             builder.Services.AddScoped<IUploadAuthorizationProvider, AnonymousUploadAuthorizationProvider>();
             return builder;
