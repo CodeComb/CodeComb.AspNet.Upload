@@ -28,7 +28,9 @@ namespace Microsoft.AspNet.Builder
                     context.HttpContext.Response.ContentType = blob.ContentType;
                     context.HttpContext.Response.ContentLength = blob.ContentLength;
                     context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
+                    context.HttpContext.Response.Body.Position = 0;
                     context.HttpContext.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
+                    context.HttpContext.Response.Body.Flush();
                 }
             });
             var routeBuilder1 = new RouteBuilder();
