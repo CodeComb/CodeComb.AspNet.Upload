@@ -40,7 +40,7 @@ namespace CodeComb.AspNet.Upload.Sample
     <script src=""/scripts/jquery.codecomb.fileupload.js""></script>
 </head>
 <body>
-    <textarea id=""txtSample"">Drag an image and drop it in here, or paste an image in here.</textarea>
+    <textarea style=""height: 300px; width: 300px;"" id=""txtSample"">Drag an image and drop it in here, or paste an image in here.</textarea>
     <script>
         $('#txtSample').dragDropOrPaste();
     </script>
@@ -52,7 +52,7 @@ namespace CodeComb.AspNet.Upload.Sample
                 var imageStr = "";
                 foreach (var x in images)
                 {
-                    imageStr += $@"<img alt=""{x.Name}"" src=""/file/download/{x.Id}"" /><br />";
+                    imageStr += $@"<img style=""max-width: 300px;"" alt=""{x.Name}"" src=""/file/download/{x.Id}"" /><br />";
                 }
                 await context.Response.WriteAsync(str.Replace("{IMAGES}", imageStr));
             });
