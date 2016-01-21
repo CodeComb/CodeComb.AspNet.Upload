@@ -50,28 +50,44 @@ namespace Microsoft.AspNet.Builder
                     var file = context.HttpContext.Request.Form.Files["file"];
                     if (file != null)
                     {
-                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.File
+                        var f = new CodeComb.AspNet.Upload.Models.File
                         {
                             Time = DateTime.Now,
                             ContentType = file.ContentType,
                             ContentLength = file.Length,
                             FileName = file.GetFileName(),
                             Bytes = file.ReadAllBytes()
-                        });
-                        await context.HttpContext.Response.WriteAsync(id.ToString());
+                        };
+                        var id = bs.Set(f);
+                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                        {
+                            id = id,
+                            name = f.FileName,
+                            type = f.ContentType,
+                            length = f.ContentLength,
+                            time = f.Time
+                        }));
                     }
                     else
                     {
                         var img = new Base64StringImage(context.HttpContext.Request.Form["file"]);
-                        var id = bs.Set(new CodeComb.AspNet.Upload.Models.File
+                        var f = new CodeComb.AspNet.Upload.Models.File
                         {
                             Time = DateTime.Now,
                             ContentType = img.ContentType,
                             ContentLength = img.ImageString.Length,
                             FileName = "file",
                             Bytes = img.AllBytes
-                        });
-                        await context.HttpContext.Response.WriteAsync(id.ToString());
+                        };
+                        var id = bs.Set(f);
+                        await context.HttpContext.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                        {
+                            id = id,
+                            name = f.FileName,
+                            type = f.ContentType,
+                            length = f.ContentLength,
+                            time = f.Time
+                        }));
                     }
                 }
                 else
@@ -770,12 +786,14 @@ namespace Microsoft.AspNet.Builder
         .on('fileStart.dropper', function (file) {
             var pos = obj.getCursorPosition();
             var str = obj.val();
+            if (pos == 0 && !obj.is(':focus'))
+                pos = str.length;
             if (onUploading)
                 onUploading();
             obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
         })
         .on('fileComplete.dropper', function (file, res, ret) {
-                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/" + downloadAction + @"/' + result.fileId + ')');
+                var content = obj.val().replace('![Upload](Uploading...)', '![' + res.name + '](/" + controller + "/" + downloadAction + @"/' + res.id + ')');
             obj.val(content);
             if (onUploaded)
                 onUploaded();
@@ -789,7 +807,7 @@ namespace Microsoft.AspNet.Builder
                 onUploading();
             obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
             $.post('/" + controller + "/" + uploadAction + @"', { file: data.dataURL }, function (result) {
-                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/"+ downloadAction + @"/' + result.fileId + ')');
+                var content = obj.val().replace('![Upload](Uploading...)', '![' + result.name + '](/" + controller + "/"+ downloadAction + @"/' + result.id + ')');
                 obj.val(content);
             }, 'json');
         });
