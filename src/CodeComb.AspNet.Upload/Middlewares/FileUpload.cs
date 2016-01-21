@@ -26,11 +26,8 @@ namespace Microsoft.AspNet.Builder
                 else
                 {
                     context.HttpContext.Response.ContentType = blob.ContentType;
-                    context.HttpContext.Response.ContentLength = blob.ContentLength;
                     context.HttpContext.Response.Headers["Content-disposition"] = $"attachment; filename={WebUtility.UrlEncode(blob.FileName)}";
-                    context.HttpContext.Response.Body.Position = 0;
                     context.HttpContext.Response.Body.Write(blob.Bytes, 0, blob.Bytes.Length);
-                    context.HttpContext.Response.Body.Flush();
                 }
             });
             var routeBuilder1 = new RouteBuilder();
@@ -98,7 +95,6 @@ namespace Microsoft.AspNet.Builder
                     await context.HttpContext.Response.WriteAsync("Bad Request");
                 }
             });
-
             var routeBuilder2 = new RouteBuilder();
             routeBuilder2.ServiceProvider = self.ApplicationServices;
             routeBuilder2.DefaultHandler = endpoint2;
