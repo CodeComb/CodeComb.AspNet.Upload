@@ -1,10 +1,11 @@
 ﻿{
   "title": "CodeComb.AspNet.Upload",
-  "version": "2.0.0-*",
+  "version": "2.0.0-rc1-final",
   "description": "CodeComb.AspNet.Upload Class Library",
-  "authors": [ "Yuuko" ],
+  "authors": [ "AmamiyaYuuko" ],
   "tags": [ "vNext", "Ajax", "FileUpload" ],
-  "projectUrl": "",
+  "projectUrl": "https://github.com/CodeComb/CodeComb.AspNet.Upload",
+  "iconUrl": "http://www.1234.sh/images/logo.png",
   "licenseUrl": "",
 
   "dependencies": {
