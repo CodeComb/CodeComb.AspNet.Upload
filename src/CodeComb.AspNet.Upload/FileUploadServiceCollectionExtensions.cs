@@ -12,7 +12,6 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var builder = new FileUploadBuilder();
             builder.Services = self.AddRouting();
-            builder.Services.AddScoped<IUploadAuthorizationProvider, AnonymousUploadAuthorizationProvider>();
             return builder;
         }
     }
