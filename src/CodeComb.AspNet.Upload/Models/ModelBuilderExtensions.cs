@@ -8,7 +8,7 @@ namespace CodeComb.AspNet.Upload.Models
 {
     public static class ModelBuilderExtensions
     {
-        public static ModelBuilder SetupBlob(this ModelBuilder self)
+        public static ModelBuilder SetupFiles(this ModelBuilder self)
         {
             return self.Entity<File>(e =>
             {
