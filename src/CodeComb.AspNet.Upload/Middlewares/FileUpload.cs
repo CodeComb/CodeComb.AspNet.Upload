@@ -791,7 +791,7 @@ namespace Microsoft.AspNet.Builder
             obj.val(str.substr(0, pos) + '\r\n![Upload](Uploading...)\r\n' + str.substr(pos));
         })
         .on('fileComplete.dropper', function (file, res, ret) {
-                var content = obj.val().replace('![Upload](Uploading...)', '![' + res.name + '](/" + controller + "/" + downloadAction + @"/' + res.id + ')');
+                var content = obj.val().replace('![Upload](Uploading...)', '![' + ret.name + '](/" + controller + "/" + downloadAction + @"/' + ret.id + ')');
             obj.val(content);
             if (onUploaded)
                 onUploaded();
